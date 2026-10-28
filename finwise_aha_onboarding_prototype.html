@@ -1,0 +1,533 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FinWise Aha Onboarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --ink:#15211E; --ink-2:#44504C; --muted:#6E7A75;
+    --ground:#EFF2F0; --surface:#FFFFFF; --sunken:#F5F8F6;
+    --line:#DCE4E0; --line-soft:#E8EEEB;
+    --accent:#0F6E56; --accent-ink:#08503F; --accent-soft:#E1F5EE;
+    --on-accent:#FFFFFF;
+    --warn:#8E5415; --warn-soft:#F9F0E3; --warn-line:#E6D4B8;
+    --shadow:0 1px 2px rgba(21,33,30,.05), 0 10px 30px rgba(21,33,30,.07);
+    --sans:"Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#E7EEEB; --ink-2:#B6C2BD; --muted:#8B9893;
+      --ground:#101614; --surface:#19211E; --sunken:#141B19;
+      --line:#2C3833; --line-soft:#232E2A;
+      --accent:#4FC8A4; --accent-ink:#A6E8D1; --accent-soft:#16312A;
+      --on-accent:#08201A;
+      --warn:#DFA868; --warn-soft:#271F16; --warn-line:#3B2F1F;
+      --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 30px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#E7EEEB; --ink-2:#B6C2BD; --muted:#8B9893;
+    --ground:#101614; --surface:#19211E; --sunken:#141B19;
+    --line:#2C3833; --line-soft:#232E2A;
+    --accent:#4FC8A4; --accent-ink:#A6E8D1; --accent-soft:#16312A;
+    --on-accent:#08201A;
+    --warn:#DFA868; --warn-soft:#271F16; --warn-line:#3B2F1F;
+    --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 30px rgba(0,0,0,.4);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; }
+  img{ max-width:100%; }
+  [hidden]{ display:none !important; }
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:var(--sans); font-size:15px; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{ max-width:1000px; margin:0 auto; padding-inline:16px; padding-block:28px 40px; }
+  h1,h2,h3{ margin:0; text-wrap:balance; }
+  p{ margin:0; }
+  button{ font:inherit; color:inherit; cursor:pointer; }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:4px; }
+  .eyebrow{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--muted);
+  }
+
+  .masthead{ display:flex; flex-wrap:wrap; gap:12px 20px; align-items:flex-end; justify-content:space-between; margin-bottom:22px; }
+  .masthead h1{ font-size:21px; font-weight:600; letter-spacing:-.015em; margin-top:5px; }
+  .masthead .sub{ color:var(--muted); font-size:13.5px; margin-top:5px; max-width:54ch; }
+  .restart{
+    background:var(--surface); border:1px solid var(--line); border-radius:999px;
+    padding:7px 15px; font-size:12.5px; font-weight:500; color:var(--ink-2);
+  }
+  .restart:hover{ border-color:var(--accent); color:var(--accent); }
+
+  .stage{ display:grid; grid-template-columns:376px minmax(0,1fr); gap:26px; align-items:start; }
+  @media (max-width:880px){ .stage{ grid-template-columns:minmax(0,1fr); } }
+
+  .device{
+    background:var(--surface); border:1px solid var(--line); border-radius:20px;
+    box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column;
+    min-height:600px; max-width:100%;
+  }
+  .devtop{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:13px 18px; border-bottom:1px solid var(--line-soft); background:var(--sunken);
+  }
+  .brand{ display:flex; align-items:center; gap:8px; font-weight:600; font-size:13.5px; letter-spacing:-.01em; }
+  .mark{ width:17px; height:17px; border-radius:5px; background:var(--accent); display:block; }
+  .dots{ display:flex; gap:5px; }
+  .dot{ width:6px; height:6px; border-radius:50%; background:var(--line); transition:background .2s, transform .2s; }
+  .dot.on{ background:var(--accent); transform:scale(1.25); }
+  .dot.done{ background:var(--accent-soft); }
+
+  .screen{ padding:22px 20px 24px; display:flex; flex-direction:column; gap:16px; flex:1; }
+  .screen h2{ font-size:19.5px; font-weight:600; letter-spacing:-.02em; line-height:1.25; }
+  .lede{ color:var(--muted); font-size:13.5px; }
+
+  .choices{ display:flex; flex-direction:column; gap:9px; }
+  .choice{
+    text-align:left; background:var(--surface); border:1px solid var(--line);
+    border-radius:12px; padding:14px 15px; display:flex; flex-direction:column; gap:3px;
+    transition:border-color .15s, background .15s, transform .1s;
+  }
+  .choice:hover{ border-color:var(--accent); background:var(--accent-soft); }
+  .choice:active{ transform:translateY(1px); }
+  .choice .t{ font-weight:600; font-size:14.5px; }
+  .choice .d{ color:var(--muted); font-size:12.5px; }
+
+  .search{
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--line);
+    background:var(--sunken); color:var(--ink); font:inherit; font-size:13.5px;
+  }
+  .search::placeholder{ color:var(--muted); }
+  .banks{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .bank{
+    display:flex; align-items:center; gap:9px; padding:11px 12px; border-radius:10px;
+    border:1px solid var(--line); background:var(--surface); font-size:13px; font-weight:500;
+    transition:border-color .15s, background .15s;
+  }
+  .bank:hover{ border-color:var(--accent); }
+  .bank[aria-pressed="true"]{ border-color:var(--accent); background:var(--accent-soft); color:var(--accent-ink); }
+  .blob{ width:20px; height:20px; border-radius:6px; flex:none; }
+  .trust{ display:flex; gap:8px; color:var(--muted); font-size:11.5px; line-height:1.45; }
+
+  .totals{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--line-soft); border:1px solid var(--line-soft); border-radius:12px; overflow:hidden; }
+  .tot{ background:var(--surface); padding:11px 12px; }
+  .tot .k{ font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .tot .v{ font-family:var(--mono); font-size:15px; font-weight:500; margin-top:3px; font-variant-numeric:tabular-nums; letter-spacing:-.02em; }
+  .tot .v.pos{ color:var(--accent-ink); }
+
+  .chart{ display:flex; gap:14px; align-items:flex-end; height:112px; padding:0 2px; }
+  .mo{ flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end; }
+  .pair{ display:flex; gap:4px; align-items:flex-end; height:100%; width:100%; justify-content:center; }
+  .bar{ width:17px; border-radius:3px 3px 0 0; }
+  .bar.in{ background:var(--accent); }
+  .bar.out{ background:var(--line); }
+  .mo .lbl{ font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.06em; }
+  .legend{ display:flex; gap:14px; font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.06em; }
+  .legend span{ display:flex; align-items:center; gap:5px; }
+  .swatch{ width:9px; height:9px; border-radius:2px; display:block; }
+
+  .flag{
+    display:flex; gap:9px; background:var(--warn-soft); border:1px solid var(--warn-line);
+    border-radius:10px; padding:11px 12px; font-size:12.5px; color:var(--warn); line-height:1.45;
+  }
+  .flag b{ color:var(--warn); font-weight:600; }
+
+  .rows{ display:flex; flex-direction:column; }
+  .row{ display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px solid var(--line-soft); font-size:13px; }
+  .row:last-child{ border-bottom:0; }
+  .row .amt{ font-family:var(--mono); font-variant-numeric:tabular-nums; color:var(--ink-2); }
+  .more{ font-size:11.5px; color:var(--muted); padding-top:8px; }
+
+  .spacer{ flex:1; min-height:4px; }
+  .cta{
+    width:100%; background:var(--accent); color:var(--on-accent); border:0; border-radius:11px;
+    padding:13px 16px; font-weight:600; font-size:14.5px; letter-spacing:-.01em;
+    transition:filter .15s, transform .1s;
+  }
+  .cta:hover{ filter:brightness(1.08); }
+  .cta:active{ transform:translateY(1px); }
+  .cta[disabled]{ opacity:.4; cursor:not-allowed; }
+  .ghost{ background:none; border:0; color:var(--muted); font-size:12.5px; text-decoration:underline; text-underline-offset:3px; align-self:center; padding:4px; }
+  .ghost:hover{ color:var(--ink-2); }
+
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-family:var(--mono); font-size:10px; letter-spacing:.11em; text-transform:uppercase; color:var(--muted); }
+  .note{
+    background:var(--sunken); border:1px solid var(--line-soft); border-radius:11px;
+    padding:12px 13px; font-size:12.5px; color:var(--ink-2); line-height:1.5;
+  }
+  .note .subj{ font-weight:600; color:var(--ink); display:block; margin-bottom:5px; }
+  .perm{ display:flex; gap:8px; font-size:12px; color:var(--accent-ink); background:var(--accent-soft); border-radius:9px; padding:10px 11px; line-height:1.45; }
+
+  .aha{ text-align:center; display:flex; flex-direction:column; align-items:center; gap:12px; padding-top:18px; }
+  .seal{
+    width:52px; height:52px; border-radius:50%; background:var(--accent-soft);
+    border:1px solid var(--accent); display:grid; place-items:center;
+    font-family:var(--mono); font-size:11px; letter-spacing:.08em; color:var(--accent-ink); font-weight:500;
+  }
+  .comment{
+    width:100%; text-align:left; background:var(--surface); border:1px solid var(--line);
+    border-left:3px solid var(--accent); border-radius:10px; padding:12px 13px; font-size:13px; line-height:1.5;
+  }
+  .comment .who{ font-weight:600; font-size:12.5px; margin-bottom:4px; }
+  .comment .when{ font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:.07em; font-weight:400; }
+
+  .loading{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; flex:1; color:var(--muted); font-size:13px; }
+  .spin{ width:26px; height:26px; border-radius:50%; border:2px solid var(--line); border-top-color:var(--accent); animation:sp .8s linear infinite; }
+  @keyframes sp{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+  }
+
+  .rail{ display:flex; flex-direction:column; gap:14px; }
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 17px; }
+  .card h3{ font-size:15px; font-weight:600; letter-spacing:-.01em; margin-bottom:10px; }
+  .spec{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:9px 14px; font-size:13.5px; margin:0; }
+  .spec dt{ font-family:var(--mono); font-size:9.5px; letter-spacing:.11em; text-transform:uppercase; color:var(--muted); padding-top:4px; }
+  .spec dd{ margin:0; color:var(--ink-2); }
+  .spec dd b{ color:var(--ink); font-weight:600; }
+  .cut{ margin-top:12px; padding-top:12px; border-top:1px dashed var(--line); font-size:12.5px; color:var(--muted); line-height:1.55; }
+  .cut b{ color:var(--ink-2); font-weight:600; }
+  .tag{
+    display:inline-block; font-family:var(--mono); font-size:9.5px; letter-spacing:.12em;
+    text-transform:uppercase; padding:3px 7px; border-radius:5px; margin-bottom:9px;
+  }
+  .tag.step{ background:var(--sunken); color:var(--muted); border:1px solid var(--line); }
+  .tag.aha{ background:var(--accent); color:var(--on-accent); }
+  .tag.branch{ background:var(--warn-soft); color:var(--warn); border:1px solid var(--warn-line); }
+
+  .why{ font-size:13.5px; color:var(--ink-2); line-height:1.6; }
+  .why + .why{ margin-top:9px; }
+  .why b{ color:var(--ink); font-weight:600; }
+  .chain{ display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin-top:12px; font-size:12.5px; }
+  .link{ padding:5px 9px; border-radius:7px; background:var(--sunken); border:1px solid var(--line); color:var(--ink-2); }
+  .link.is-aha{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent-ink); font-weight:600; }
+  .arrow{ color:var(--muted); font-family:var(--mono); }
+
+  footer{ margin-top:26px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:12.5px; line-height:1.6; }
+  footer b{ color:var(--ink-2); font-weight:600; }
+</style>
+
+<div class="page">
+  <header class="masthead">
+    <div>
+      <p class="eyebrow">Product Experimentation · Module 2 lab · FinWise Co.</p>
+      <h1>Path to the Aha moment</h1>
+      <p class="sub">Four screens from sign-up to the moment a second person touches the owner's real numbers. Click through it — the panel explains each screen's one job.</p>
+    </div>
+    <button class="restart" id="restart" type="button">Restart flow</button>
+  </header>
+
+  <div class="stage">
+    <div class="device">
+      <div class="devtop">
+        <div class="brand"><span class="mark"></span> FinWise</div>
+        <div class="dots" id="dots" aria-hidden="true">
+          <span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+      </div>
+
+      <section class="screen" id="s1" aria-label="Screen 1">
+        <div>
+          <h2>Who checks your numbers?</h2>
+          <p class="lede" style="margin-top:6px;">One tap. It changes what we set up for you.</p>
+        </div>
+        <div class="choices">
+          <button class="choice" type="button" data-persona="solo">
+            <span class="t">Just me</span>
+            <span class="d">I do my own books</span>
+          </button>
+          <button class="choice" type="button" data-persona="accountant">
+            <span class="t">My bookkeeper or accountant</span>
+            <span class="d">Someone outside the business reviews them</span>
+          </button>
+          <button class="choice" type="button" data-persona="team">
+            <span class="t">My co-founder or team</span>
+            <span class="d">Someone inside the business reviews them</span>
+          </button>
+        </div>
+        <div class="spacer"></div>
+        <p class="trust">No setup yet. You're already on the full plan for 14 days.</p>
+      </section>
+
+      <section class="screen" id="s2" aria-label="Screen 2" hidden>
+        <div>
+          <h2>Connect your bank</h2>
+          <p class="lede" style="margin-top:6px;">Read-only. We never move money.</p>
+        </div>
+        <input class="search" id="bankSearch" type="text" placeholder="Search 400+ banks" autocomplete="off">
+        <div class="banks" id="banks">
+          <button class="bank" type="button" aria-pressed="false"><span class="blob" style="background:#2D7FF9"></span>Barclays</button>
+          <button class="bank" type="button" aria-pressed="false"><span class="blob" style="background:#C8102E"></span>HSBC</button>
+          <button class="bank" type="button" aria-pressed="false"><span class="blob" style="background:#1B7A3D"></span>Lloyds</button>
+          <button class="bank" type="button" aria-pressed="false"><span class="blob" style="background:#4B2E83"></span>NatWest</button>
+          <button class="bank" type="button" aria-pressed="false"><span class="blob" style="background:#E03A2F"></span>Santander</button>
+          <button class="bank" type="button" aria-pressed="false"><span class="blob" style="background:#F2545B"></span>Monzo</button>
+        </div>
+        <p class="trust">Open Banking, read-only. Revoke any time from your bank.</p>
+        <div class="spacer"></div>
+        <button class="cta" id="connect" type="button" disabled>Connect securely</button>
+      </section>
+
+      <section class="screen loading" id="sLoad" aria-label="Connecting" hidden>
+        <div class="spin" role="status" aria-label="Connecting"></div>
+        <p>Reading 90 days and categorising…</p>
+      </section>
+
+      <section class="screen" id="s3" aria-label="Screen 3" hidden>
+        <div>
+          <p class="eyebrow">Aug – Oct 2026 · Harper &amp; Vale Joinery</p>
+          <h2 style="margin-top:5px;">Here's your last 90 days</h2>
+        </div>
+
+        <div class="totals">
+          <div class="tot"><div class="k">In</div><div class="v">£54,120</div></div>
+          <div class="tot"><div class="k">Out</div><div class="v">£41,680</div></div>
+          <div class="tot"><div class="k">Net</div><div class="v pos">+£12,440</div></div>
+        </div>
+
+        <div>
+          <div class="chart" role="img" aria-label="Money in versus money out for August, September and October 2026. September is the only month where money out exceeds money in.">
+            <div class="mo"><div class="pair"><div class="bar in" style="height:97%"></div><div class="bar out" style="height:66%"></div></div><div class="lbl">AUG</div></div>
+            <div class="mo"><div class="pair"><div class="bar in" style="height:76%"></div><div class="bar out" style="height:85%"></div></div><div class="lbl">SEP</div></div>
+            <div class="mo"><div class="pair"><div class="bar in" style="height:98%"></div><div class="bar out" style="height:58%"></div></div><div class="lbl">OCT</div></div>
+          </div>
+          <div class="legend" style="margin-top:9px;">
+            <span><i class="swatch" style="background:var(--accent)"></i>Money in</span>
+            <span><i class="swatch" style="background:var(--line)"></i>Money out</span>
+          </div>
+        </div>
+
+        <div class="flag">
+          <span aria-hidden="true">!</span>
+          <span><b>September went backwards.</b> £15,220 in, £16,980 out — the only negative month. Worth someone's eyes.</span>
+        </div>
+
+        <div class="rows">
+          <div class="row"><span>Materials &amp; timber</span><span class="amt">£14,210</span></div>
+          <div class="row"><span>Subcontractors</span><span class="amt">£9,850</span></div>
+          <div class="row"><span>Vehicle &amp; fuel</span><span class="amt">£4,120</span></div>
+          <div class="row"><span>Tools &amp; equipment</span><span class="amt">£2,980</span></div>
+        </div>
+        <p class="more">+ 38 more transactions, categorised automatically.</p>
+
+        <div class="spacer"></div>
+        <button class="cta" id="toInvite" type="button">Send this to my accountant</button>
+        <button class="ghost" id="skipInvite" type="button">Not now</button>
+      </section>
+
+      <section class="screen" id="s4" aria-label="Screen 4" hidden>
+        <div>
+          <h2 id="inviteTitle">Invite your accountant</h2>
+          <p class="lede" style="margin-top:6px;">They see your numbers and can comment. They never get billed.</p>
+        </div>
+        <div class="field">
+          <label for="inviteEmail">Their email</label>
+          <input class="search" id="inviteEmail" type="email" placeholder="name@practice.co.uk" autocomplete="off">
+        </div>
+        <div class="note">
+          <span class="subj">Can you take a look at my last 90 days?</span>
+          I've put the books into FinWise. This is Aug–Oct straight from the bank, already categorised. September is the one I'd like your eyes on.
+        </div>
+        <p class="perm"><span aria-hidden="true">✓</span><span>Free view-and-comment access, permanently. No card, no seat charge.</span></p>
+        <div class="spacer"></div>
+        <button class="cta" id="sendInvite" type="button" disabled>Send invitation</button>
+      </section>
+
+      <section class="screen" id="sAha" aria-label="Aha moment" hidden>
+        <div class="aha">
+          <div class="seal">AHA</div>
+          <h2 id="ahaTitle">Your accountant is in.</h2>
+          <p class="lede">She opened the 90-day summary and left a note.</p>
+          <div class="comment">
+            <div class="who">Sarah Okonjo <span class="when">· 2 MIN AGO</span></div>
+            September's dip is two invoices that slipped into October — your cash is fine. Reclassify the timber order and I'll sign it off.
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <p class="trust">Two people now work in this account. There is something here to lose on day 15.</p>
+      </section>
+
+      <section class="screen" id="sSolo" aria-label="Sole trader branch" hidden>
+        <div>
+          <h2>You're set up.</h2>
+          <p class="lede" style="margin-top:6px;">Your books are live. We'll flag anything unusual each week.</p>
+        </div>
+        <div class="flag">
+          <span aria-hidden="true">!</span>
+          <span><b>No second person to invite.</b> This account can't reach the Aha moment as defined — and that is the result worth measuring, not a screen to design around.</span>
+        </div>
+        <div class="spacer"></div>
+        <p class="trust">In the live test, this branch answers the question the whole bet rests on: do FinWise users have anyone to invite?</p>
+      </section>
+    </div>
+
+    <aside class="rail">
+      <div class="card">
+        <div id="r1">
+          <span class="tag step">Screen 1 of 4</span>
+          <h3>Who checks your numbers?</h3>
+          <dl class="spec">
+            <dt>Job</dt><dd>Route the flow — and find out whether this user <b>has anyone to invite at all</b>.</dd>
+            <dt>Action</dt><dd>One tap. Three cards, no Next button, no other fields.</dd>
+          </dl>
+          <p class="cut"><b>Why a question earns its place here:</b> it changes the flow <em>and</em> returns, in week one, the number the whole bet depends on — the share of trial users who work with someone. One tap for that is cheap.</p>
+        </div>
+
+        <div id="r2" hidden>
+          <span class="tag step">Screen 2 of 4</span>
+          <h3>Connect your bank</h3>
+          <dl class="spec">
+            <dt>Job</dt><dd>Get <b>real</b> financial data in. The narrowest point in the whole product.</dd>
+            <dt>Action</dt><dd>Pick a bank, press connect. Nothing else on the screen.</dd>
+          </dl>
+          <p class="cut"><b>Cut:</b> "explore with sample data". It fakes the value and guarantees an empty account on day 15 — the exact failure FinWise is already in. Only 39.37% of trials cross this line today.</p>
+        </div>
+
+        <div id="r3" hidden>
+          <span class="tag step">Screen 3 of 4</span>
+          <h3>Here's your last 90 days</h3>
+          <dl class="spec">
+            <dt>Job</dt><dd>Deliver the value <b>already built</b>. The user's only job is to look.</dd>
+            <dt>Action</dt><dd>One primary button: send it to the person named on screen 1.</dd>
+          </dl>
+          <p class="cut"><b>Cut:</b> date pickers, settings, empty states, the feature tour. <b>Pre-filled:</b> date range, categorisation, business name and currency — all from the bank connection, none of it asked for. The September flag exists to make sharing feel obvious.</p>
+        </div>
+
+        <div id="r4" hidden>
+          <span class="tag step">Screen 4 of 4</span>
+          <h3>Invite your accountant</h3>
+          <dl class="spec">
+            <dt>Job</dt><dd>Get the second person in. This is the <b>Aha trigger</b>.</dd>
+            <dt>Action</dt><dd>One email field, one send. Subject and message already written.</dd>
+          </dl>
+          <p class="cut"><b>Why here and not at first login:</b> you don't ask an accountant to review an empty account. The invite only makes sense once there's a report to look at — so screen 1 plants it and screen 3 asks.</p>
+        </div>
+
+        <div id="rAha" hidden>
+          <span class="tag aha">The Aha moment</span>
+          <h3>A second person touched the numbers</h3>
+          <p class="why">Not the chart. <b>The comment.</b> A single-user account has nothing to lose when the reverse trial downgrades on day 15 — a shared one has someone depending on it.</p>
+          <p class="why">The obvious candidate was ruled out by the data: deep feature adoption rose <b>5.4×</b> over 13 months (10.78% → 58.26%) while trial→paid moved <b>2.05% → 2.06%</b>. Users reached value alone, and it converted nobody.</p>
+          <div class="chain">
+            <span class="link">Connect bank</span><span class="arrow">→</span>
+            <span class="link">First real report</span><span class="arrow">→</span>
+            <span class="link is-aha">Second person comments</span>
+          </div>
+        </div>
+
+        <div id="rSolo" hidden>
+          <span class="tag branch">Branch · sole trader</span>
+          <h3>The collapse condition, surfaced on day one</h3>
+          <p class="why">If a large share of trials answer "just me", the collaboration loop has no fuel and the bet fails — not because the flow is wrong, but because the premise is.</p>
+          <p class="why">Worth finding out with <b>one tap on screen 1</b> rather than after a quarter of building. The branch stays deliberately thin.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="tag step">The definition</span>
+        <h3>FinWise's Aha moment</h3>
+        <p class="why">A trial account reaches Aha when <b>a second invited user has viewed or commented on a report built from the owner's own connected financial data, within 7 days of sign-up.</b></p>
+        <p class="why">Seven days, not fourteen — the reverse trial downgrades on day 15, so the shared account needs a week of real use before anything is taken away.</p>
+        <p class="why" style="color:var(--muted);">Still a candidate, not a confirmed Aha. Confirm it by splitting retained-past-90-day accounts by active users per account. Flat retention across account size kills it.</p>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <b>Prototype — mocked data.</b> Harper &amp; Vale Joinery is an example account: no bank connection is made and no email is sent. Built for the Module 2 lab, FinWise Co. scenario — 2% trial&#8594;paid, 40% one-year retention, reverse trial.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var state = { persona:null, bank:null };
+  var SCREENS = ['s1','s2','sLoad','s3','s4','sAha','sSolo'];
+  var RAILS   = { s1:'r1', s2:'r2', sLoad:'r2', s3:'r3', s4:'r4', sAha:'rAha', sSolo:'rSolo' };
+  var RAILIDS = ['r1','r2','r3','r4','rAha','rSolo'];
+  var STEP    = { s1:1, s2:2, sLoad:2, s3:3, s4:4, sAha:4, sSolo:3 };
+  var WORD    = { solo:'', accountant:'accountant', team:'co-founder' };
+
+  function $(id){ return document.getElementById(id); }
+
+  function show(id){
+    SCREENS.forEach(function(s){ var el=$(s); if(el){ el.hidden = (s!==id); } });
+    RAILIDS.forEach(function(r){ var el=$(r); if(el){ el.hidden = true; } });
+    var r = $(RAILS[id]); if(r){ r.hidden = false; }
+    var step = STEP[id] || 1;
+    var dots = $('dots').children;
+    for(var i=0;i<dots.length;i++){
+      dots[i].className = 'dot' + (i+1===step ? ' on' : (i+1<step ? ' done' : ''));
+    }
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-persona]'), function(btn){
+    btn.addEventListener('click', function(){
+      state.persona = btn.getAttribute('data-persona');
+      var w = WORD[state.persona];
+      if(w){
+        $('toInvite').textContent = 'Send this to my ' + w;
+        $('inviteTitle').textContent = 'Invite your ' + w;
+        $('ahaTitle').textContent = 'Your ' + w + ' is in.';
+      } else {
+        $('toInvite').textContent = 'Looks right — continue';
+      }
+      show('s2');
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('#banks .bank'), function(b){
+    b.addEventListener('click', function(){
+      Array.prototype.forEach.call(document.querySelectorAll('#banks .bank'), function(o){ o.setAttribute('aria-pressed','false'); });
+      b.setAttribute('aria-pressed','true');
+      state.bank = b.textContent.trim();
+      $('connect').disabled = false;
+    });
+  });
+
+  $('bankSearch').addEventListener('input', function(){
+    var q = this.value.toLowerCase();
+    Array.prototype.forEach.call(document.querySelectorAll('#banks .bank'), function(b){
+      b.hidden = q.length > 0 && b.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  $('connect').addEventListener('click', function(){
+    show('sLoad');
+    setTimeout(function(){ show('s3'); }, 1700);
+  });
+
+  $('toInvite').addEventListener('click', function(){
+    if(state.persona === 'solo'){ show('sSolo'); } else { show('s4'); }
+  });
+  $('skipInvite').addEventListener('click', function(){ show('sSolo'); });
+
+  $('inviteEmail').addEventListener('input', function(){
+    $('sendInvite').disabled = this.value.indexOf('@') === -1;
+  });
+  $('sendInvite').addEventListener('click', function(){ show('sAha'); });
+
+  $('restart').addEventListener('click', function(){
+    state = { persona:null, bank:null };
+    $('connect').disabled = true;
+    $('sendInvite').disabled = true;
+    $('inviteEmail').value = '';
+    $('bankSearch').value = '';
+    Array.prototype.forEach.call(document.querySelectorAll('#banks .bank'), function(b){
+      b.setAttribute('aria-pressed','false'); b.hidden = false;
+    });
+    $('toInvite').textContent = 'Send this to my accountant';
+    $('inviteTitle').textContent = 'Invite your accountant';
+    $('ahaTitle').textContent = 'Your accountant is in.';
+    show('s1');
+  });
+
+  show('s1');
+})();
+</script>
