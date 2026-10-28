@@ -4,7 +4,7 @@
 
 ## Growth hypothesis
 
-FinWise's biggest growth problem is FinWise’s biggest growth problem is that the product creates value for exactly one person, so nothing built during the reverse trial becomes something anyone would pay to keep or lose by leaving., because because over 13 months deep feature adoption rose 5.4× (Modeling 10.78% → 58.26%) while trial→paid stayed locked in a 0.21-point band and churn outran new customers in all 13 months. Usage went up; neither conversion nor retention responded. The missing ingredient isn’t engagement — it’s dependency..
+FinWise’s biggest growth problem is that the product creates value for exactly one person, so nothing built during the reverse trial becomes something anyone would pay to keep or lose by leaving., because over 13 months deep feature adoption rose 5.4× (Modeling 10.78% → 58.26%) while trial→paid stayed locked in a 0.21-point band and churn outran new customers in all 13 months. Usage went up; neither conversion nor retention responded. The missing ingredient isn’t engagement — it’s dependency..
 
 _Working notes: I think FinWise biggest problem is that only 2 % of customers who begin a trial convert to paying customers. 
 As the majority of the marketing budget is going to paid acquissition to drive trial sign-ups and only 2 % of them becoming paid customers. It is really problematic.
@@ -14,7 +14,9 @@ So the problem is that the vlaue is hard to realize for the customers. Therefore
 - But only 2 % of trial customers become paid customers: This means that majority of the users never recognize the value and therefore never got far enough in to feel the loss by reverse trial.
 - That means, adding more money to acquisition is no longer driving meaningful growth. The acquisition isn't the constraint.
 
-Moreover, 60 % churn means that the failure continues after payment. Against the data: The data at one hand confirmed and at another challenged my hypotheses:
+Moreover, 60 % churn means that the failure continues after payment. 
+
+Against the data: The data at one hand confirmed and at another challenged my hypotheses:
 Confirmed:
 
 I claimed users never reach real value. Import Data at 39.37% backs that — the majority of trials never load their own numbers.
@@ -31,7 +33,11 @@ _____
 
 ## The bet
 
-the highest-leverage experiment I’d run first is making “invite your bookkeeper or accountant” the central action of the reverse trial, not a buried settings option.  Changed hypothesis: IF we make inviting a second person the primary call-to-action of the reverse trial — surfaced at first login and again the moment a user completes their first report — with the invitee getting permanent free view-and-comment access,  THEN the share of trial accounts reaching 2+ active users within 14 days WILL rise to 25%+, and trial→paid among multi-user accounts WILL run at least 2× single-user accounts (≈4% vs ≈2%),  BECAUSE a single-user account has nothing to lose downgrade, while a shared account has a second person depending on it — and a second seat creates a payment trigger that doesn’t require the owner to decide in the abstract,  WHICH WE’LL MEASURE WITH an A/B test over 4 weeks.  Primary: % of trial accounts with 2+ active users by day 14 Secondary: trial→paid split by account size;  Guardrails: day-1 drop-off, single conversation rate must not dropp off
+The highest-leverage experiment I’d run first is making “invite your bookkeeper or accountant” the central action of the reverse trial, not a buried settings option.  
+Changed hypothesis: 
+IF we make inviting a second person the primary call-to-action of the reverse trial — surfaced at first login and again the moment a user completes their first report — with the invitee getting permanent free view-and-comment access,  
+THEN the share of trial accounts reaching 2+ active users within 14 days WILL rise to 25%+, and trial→paid among multi-user accounts WILL run at least 2× single-user accounts (≈4% vs ≈2%), BECAUSE a single-user account has nothing to lose downgrade, while a shared account has a second person depending on it — and a second seat creates a payment trigger that doesn’t require the owner to decide in the abstract,  
+WHICH WE’LL MEASURE WITH an A/B test over 4 weeks.  Primary: % of trial accounts with 2+ active users by day 14 Secondary: trial→paid split by account size;  Guardrails: day-1 drop-off, single conversation rate must not dropp off
 
 **Not doing:** I’m not touching acquisition, and I’m not running a retention programme or a pricing test first. Three specific trade-offs:
 
