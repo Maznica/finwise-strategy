@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinWise signal dashboard</title>
+<style>
+:root{
+  --surface-0:#f7f6f3; --surface-1:#fcfcfb; --surface-2:#ffffff;
+  --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#898781;
+  --border:rgba(11,11,11,.10); --grid:#e1e0d9;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --surface-0:#121211; --surface-1:#1a1a19; --surface-2:#1f1f1e;
+    --text-primary:#f0efec; --text-secondary:#c3c2b7; --text-muted:#898781;
+    --border:rgba(255,255,255,.10); --grid:#2c2c2a;
+  }
+}
+:root[data-theme="dark"]{
+  --surface-0:#121211; --surface-1:#1a1a19; --surface-2:#1f1f1e;
+  --text-primary:#f0efec; --text-secondary:#c3c2b7; --text-muted:#898781;
+  --border:rgba(255,255,255,.10); --grid:#2c2c2a;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:32px 16px 48px;background:var(--surface-0);color:var(--text-primary);
+  font-family:"Segoe UI",system-ui,-apple-system,Helvetica,Arial,sans-serif;line-height:1.6}
+.wrap{max-width:1040px;margin:0 auto}
+h1{font-size:22px;font-weight:500;margin:0 0 4px}
+.sub{font-size:14px;color:var(--text-secondary);margin:0 0 28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.card{background:var(--surface-1);border:.5px solid var(--border);border-radius:12px;padding:16px}
+.ct{font-size:14px;color:var(--text-primary);margin-bottom:2px}
+.cs{font-size:12px;color:var(--text-muted);margin-bottom:10px}
+.pat{display:inline-block;font-size:11px;padding:2px 8px;border-radius:8px;margin-bottom:10px}
+.ceiling{background:#EEEDFE;color:#3C3489}
+.cliff{background:#FCEBEB;color:#A32D2D}
+.chart{position:relative;height:180px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:28px}
+th,td{text-align:left;padding:8px 10px;border-bottom:.5px solid var(--border)}
+th{color:var(--text-secondary);font-weight:500}
+td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
+.note{font-size:13px;color:var(--text-secondary);margin-top:28px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ceiling{background:#3C3489;color:#CECBF6}
+:root:not([data-theme="light"]) .cliff{background:#791F1F;color:#F7C1C1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>FinWise · signal dashboard</h1>
+<p class="sub">Five key metrics, October 2023 – October 2024. Module 4 lab · read the signals.</p>
+
+<div class="grid">
+  <div class="card">
+    <div class="ct">Trial-to-paid conversion rate</div>
+    <div class="cs">1.87%–2.08% · band of 0.21 points · mean 1.99%</div>
+    <span class="pat ceiling">Ceiling</span>
+    <div class="chart"><canvas id="c1" role="img" aria-label="Trial-to-paid conversion rate flat near 2 percent for all 13 months">Flat at roughly 2 percent every month.</canvas></div>
+  </div>
+  <div class="card">
+    <div class="ct">Financial modeling feature usage %</div>
+    <div class="cs">10.78% → 58.26% peak · ends 36.04%</div>
+    <span class="pat ceiling">Ceiling · flagged</span>
+    <div class="chart"><canvas id="c2" role="img" aria-label="Modeling usage rises more than fivefold to a 58 percent ceiling then oscillates and drops in the final month">Rises fivefold, then oscillates below 58 percent.</canvas></div>
+  </div>
+  <div class="card">
+    <div class="ct">Get started import feature usage %</div>
+    <div class="cs">Oscillates 30.51%–45.42% · never breaks 46%</div>
+    <span class="pat ceiling">Ceiling · flagged</span>
+    <div class="chart"><canvas id="c3" role="img" aria-label="Import usage oscillates between 30 and 45 percent with a winter dip that fully recovers">Dips in winter, recovers, never exceeds 46 percent.</canvas></div>
+  </div>
+  <div class="card">
+    <div class="ct">Average session duration (min)</div>
+    <div class="cs">Peak 14.26 (Mar) → 5.14 (Aug) · Jun→Jul −42%</div>
+    <span class="pat cliff">Cliff</span>
+    <div class="chart"><canvas id="c4" role="img" aria-label="Average session duration peaks in March then falls sharply between June and July">Peaks in March, then drops 42 percent between June and July.</canvas></div>
+  </div>
+  <div class="card">
+    <div class="ct">Average sessions per user</div>
+    <div class="cs">9 → 3 (Jan) → 9 · hard ceiling at 9</div>
+    <span class="pat ceiling">Ceiling · flagged</span>
+    <div class="chart"><canvas id="c5" role="img" aria-label="Sessions per user falls to three in January then recovers to nine and never exceeds nine">Falls to 3 in January, recovers to 9, never goes above 9.</canvas></div>
+  </div>
+  <div class="card">
+    <div class="ct">Derived · total minutes per user per month</div>
+    <div class="cs">Duration × sessions · 41–88 min, no trend</div>
+    <span class="pat ceiling">Ceiling</span>
+    <div class="chart"><canvas id="c6" role="img" aria-label="Total engagement minutes per user per month stays in a flat band between 41 and 88 minutes with no trend">Total engagement time per user is flat across the period.</canvas></div>
+  </div>
+</div>
+
+<h2 style="font-size:18px;font-weight:500;margin:36px 0 4px">Correlation test · import data % vs trial-to-paid</h2>
+<p class="sub" style="margin-bottom:20px">Both series indexed to Oct 2023 = 100 rather than drawn on a dual axis — a dual axis lets you manufacture any apparent relationship by choosing the scales.</p>
+
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+  <div class="card">
+    <div class="ct">Indexed trend · Oct 2023 = 100</div>
+    <div class="cs"><span style="display:inline-flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#1baf7a;display:inline-block"></span>Import %</span> &nbsp; <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#2a78d6;display:inline-block"></span>Trial-to-paid % (dashed)</span></div>
+    <div class="chart" style="height:220px"><canvas id="cx" role="img" aria-label="Indexed trend chart: import data usage swings between 76 and 113 while trial-to-paid stays between 97 and 108, with no co-movement">Import swings widely; conversion barely moves.</canvas></div>
+  </div>
+  <div class="card">
+    <div class="ct">Scatter · import % against trial-to-paid %</div>
+    <div class="cs">Fit line is near-horizontal · slope −0.0006</div>
+    <div class="chart" style="height:220px"><canvas id="csc" role="img" aria-label="Scatter plot of import percent against trial-to-paid percent with a near-horizontal fit line showing no relationship">No relationship; the fit line is flat.</canvas></div>
+  </div>
+</div>
+
+<table style="margin-top:20px">
+<thead><tr><th>Test</th><th>Import % vs trial-to-paid</th><th>Modeling % vs trial-to-paid</th></tr></thead>
+<tbody>
+<tr><td>Pearson r</td><td>−0.0495</td><td>+0.2448</td></tr>
+<tr><td>Spearman &rho;</td><td>0.000</td><td>—</td></tr>
+<tr><td>r&sup2; · variance explained</td><td>0.25%</td><td>5.99%</td></tr>
+<tr><td>Regression slope</td><td>−0.0006 pts / pt</td><td>+0.0010 pts / pt</td></tr>
+<tr><td>t(11) · p-value</td><td>−0.16 · 0.87</td><td>0.84 · 0.42</td></tr>
+<tr><td>95% CI for r</td><td>(−0.58, +0.52)</td><td>(−0.35, +0.70)</td></tr>
+</tbody>
+</table>
+
+<p class="note">Trial-to-paid has a standard deviation of 0.063 percentage points on a mean of 1.99% — a coefficient of variation of 3.2%. Correlation measures co-variation, so when one side does not vary, r is near zero by construction regardless of the true causal link. With n = 13 the confidence interval spans strong-negative to strong-positive, and the monthly aggregate is an ecological correlation: the trials importing in month M are not the trials converting in month M. The cohort-level test — do trials who import convert better than trials who do not — is the one that answers the question.</p>
+
+<table>
+<thead><tr><th>Month</th><th>Trials</th><th>Paid</th><th>Trial→paid</th><th>Import %</th><th>Modeling %</th><th>Session (m)</th><th>Sess/user</th><th>Churned</th></tr></thead>
+<tbody id="tb"></tbody>
+</table>
+
+<p class="note">Revenue is omitted deliberately: it equals Paid × $78,125 in every month without exception, so it carries no information the paid-customer count does not already carry, and implies constant ARPU with zero expansion revenue.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const L=['Oct 23','Nov','Dec','Jan 24','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct 24'];
+const trials=[570,487,469,358,348,644,535,552,321,613,460,576,491];
+const paid=[11,10,9,7,7,13,11,11,6,12,9,12,10];
+const churn=[13,26,23,12,24,17,38,21,16,37,24,37,29];
+const t2p=paid.map((p,i)=>+(p/trials[i]*100).toFixed(2));
+const modeling=[31.17,10.78,18.26,24.81,23.80,40.35,58.26,39.34,36.98,47.37,52.23,58.06,36.04];
+const imp=[40.17,36.29,42.73,30.63,32.16,30.51,38.55,40.45,39.88,45.42,41.23,45.22,44.26];
+const dur=[5.95,9.49,13.5,14.15,11.51,14.26,11.06,12.9,12.11,6.99,5.14,7.93,8.95];
+const spu=[9,7,5,3,5,5,8,6,5,7,8,9,9];
+const total=dur.map((d,i)=>+(d*spu[i]).toFixed(1));
+
+document.getElementById('tb').innerHTML=L.map((m,i)=>
+ '<tr><td>'+m+'</td><td>'+trials[i]+'</td><td>'+paid[i]+'</td><td>'+t2p[i].toFixed(2)+'%</td><td>'+imp[i].toFixed(2)+'%</td><td>'+modeling[i].toFixed(2)+'%</td><td>'+dur[i].toFixed(2)+'</td><td>'+spu[i]+'</td><td>'+churn[i]+'</td></tr>').join('');
+
+const cs=getComputedStyle(document.documentElement);
+const muted=cs.getPropertyValue('--text-muted').trim()||'#898781';
+const grid=cs.getPropertyValue('--grid').trim()||'#e1e0d9';
+function mk(id,data,color,min,max,unit){
+  new Chart(document.getElementById(id),{type:'line',
+    data:{labels:L,datasets:[{data:data,borderColor:color,backgroundColor:color,borderWidth:2,pointRadius:2.5,pointHoverRadius:5,tension:.25,fill:false}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+unit}}},
+      scales:{y:{min:min,max:max,grid:{color:grid},border:{display:false},ticks:{color:muted,font:{size:11}}},
+              x:{grid:{display:false},border:{color:grid},ticks:{color:muted,font:{size:10},autoSkip:false,maxRotation:45,minRotation:45}}}}});
+}
+mk('c1',t2p,'#2a78d6',0,3,'%');
+mk('c2',modeling,'#eb6834',0,70,'%');
+mk('c3',imp,'#1baf7a',0,70,'%');
+mk('c4',dur,'#eda100',0,16,' min');
+mk('c5',spu,'#6250d6',0,10,' sessions');
+mk('c6',total,'#e87ba4',0,100,' min');
+
+const iI=imp.map(v=>+(v/imp[0]*100).toFixed(1));
+const iT=t2p.map(v=>+(v/t2p[0]*100).toFixed(1));
+new Chart(document.getElementById('cx'),{type:'line',
+  data:{labels:L,datasets:[
+    {label:'Import',data:iI,borderColor:'#1baf7a',backgroundColor:'#1baf7a',borderWidth:2,pointRadius:2.5,tension:.25},
+    {label:'Trial-to-paid',data:iT,borderColor:'#2a78d6',backgroundColor:'#2a78d6',borderWidth:2,borderDash:[5,4],pointRadius:2.5,tension:.25}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y}}},
+    scales:{y:{min:60,max:130,grid:{color:grid},border:{display:false},ticks:{color:muted,font:{size:11}}},
+            x:{grid:{display:false},border:{color:grid},ticks:{color:muted,font:{size:10},autoSkip:false,maxRotation:45,minRotation:45}}}}});
+new Chart(document.getElementById('csc'),{type:'scatter',
+  data:{datasets:[
+    {data:imp.map((v,i)=>({x:v,y:+t2p[i].toFixed(4)})),backgroundColor:'#1baf7a',pointRadius:5},
+    {type:'line',data:[{x:29,y:1.9937},{x:47,y:1.9830}],borderColor:'#898781',borderWidth:1.5,borderDash:[6,4],pointRadius:0}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'import '+c.parsed.x+'% · conv '+c.parsed.y+'%'}}},
+    scales:{y:{min:1.8,max:2.15,title:{display:true,text:'trial-to-paid %',color:muted,font:{size:11}},grid:{color:grid},border:{display:false},ticks:{color:muted,font:{size:11}}},
+            x:{min:29,max:47,title:{display:true,text:'import data %',color:muted,font:{size:11}},grid:{color:grid},border:{color:grid},ticks:{color:muted,font:{size:11}}}}}});
+</script>
+</body>
+</html>
